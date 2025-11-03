@@ -3,6 +3,7 @@ package mini_tracker.mini_tracker.Services;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Exceptions.UnauthorizedException;
 import mini_tracker.mini_tracker.Payloads.LoginPayload;
+import mini_tracker.mini_tracker.Payloads.LoginResponsePayload;
 import mini_tracker.mini_tracker.Security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +18,13 @@ public class AuthorizationService {
     @Autowired
     private PasswordEncoder bcrypt;
 
-    public String CheckCredentialAndDoToken(LoginPayload body) {
+    public LoginResponsePayload CheckCredentialAndDoToken(LoginPayload body) {
 
         User found = this.userService.findByEmail(body.email());
         if (bcrypt.matches(body.password(), found.getPassword()))
         {
-            return jwtTools.createToken(found);
+            String token = jwtTools.createToken(found);
+            return new LoginResponsePayload(token, found.getUserId());
         } else{
             throw new UnauthorizedException("credenziali errate");
         }

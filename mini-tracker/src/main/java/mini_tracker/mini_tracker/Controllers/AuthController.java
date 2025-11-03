@@ -3,6 +3,7 @@ package mini_tracker.mini_tracker.Controllers;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Exceptions.ValidationsException;
 import mini_tracker.mini_tracker.Payloads.LoginPayload;
+import mini_tracker.mini_tracker.Payloads.LoginResponsePayload;
 import mini_tracker.mini_tracker.Payloads.TokenPayload;
 import mini_tracker.mini_tracker.Payloads.UserPayload;
 import mini_tracker.mini_tracker.Services.AuthorizationService;
@@ -22,8 +23,8 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public TokenPayload login(@RequestBody LoginPayload body){
-        return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body));
+    public LoginResponsePayload login(@RequestBody LoginPayload body){
+        return authorizationService.CheckCredentialAndDoToken(body);
     }
 
     @PostMapping("register")

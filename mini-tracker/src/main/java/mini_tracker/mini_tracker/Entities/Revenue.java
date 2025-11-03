@@ -1,5 +1,6 @@
 package mini_tracker.mini_tracker.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,9 @@ public class Revenue {
     private BigDecimal amount;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) // Foreign key
+    @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude
+    @JsonIgnore
     private User user;
 
     public Revenue(LocalDate date, BigDecimal amount, User user) {
