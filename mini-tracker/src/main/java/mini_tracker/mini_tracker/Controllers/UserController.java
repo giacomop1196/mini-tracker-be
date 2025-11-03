@@ -1,5 +1,10 @@
 package mini_tracker.mini_tracker.Controllers;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+import lombok.ToString;
+import mini_tracker.mini_tracker.Entities.Expense;
+import mini_tracker.mini_tracker.Entities.Revenue;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Payloads.UserPayload;
 import mini_tracker.mini_tracker.Repositories.UserRepository;
@@ -9,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -52,4 +58,5 @@ public class UserController {
     public void deleteUtente(@PathVariable UUID utenteId) {
         userService.findByIdAndDelete(utenteId);
     }
+
 }

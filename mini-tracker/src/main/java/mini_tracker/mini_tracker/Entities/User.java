@@ -15,9 +15,10 @@ import java.util.UUID;
 @Entity
 @ToString
 @NoArgsConstructor
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @Generated
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
     UUID userId;
 
@@ -70,4 +71,12 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude //Evita un loop infinito nel metodo toString()
+    private List<Revenue> revenues;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Expense> expenses;
 }

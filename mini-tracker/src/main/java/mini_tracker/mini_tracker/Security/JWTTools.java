@@ -6,10 +6,12 @@ import io.jsonwebtoken.security.Keys;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.UUID;
 
+@Component
 public class JWTTools {
 
     @Value("${jwt.secret}")
