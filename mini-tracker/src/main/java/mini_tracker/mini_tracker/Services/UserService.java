@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Exceptions.NotFoundException;
 import mini_tracker.mini_tracker.Payloads.UserPayload;
+import mini_tracker.mini_tracker.Payloads.UserUpdatePayload;
 import mini_tracker.mini_tracker.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -66,7 +67,6 @@ public class UserService {
         User found =  userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Utente non trovato" , userId ));
 
-
         found.setUsername(payload.username());
         found.setEmail(payload.email());
         found.setPassword(payload.password());
@@ -91,6 +91,18 @@ public class UserService {
     //find by email (Auth)
     public User findByEmail(String email) {
         return this.userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Utente con l'email  non è stato trovato"));
+    }
+
+    //PUT aggiorna profilo senza password
+    public User findByIdAndUpdate(UUID userId, UserUpdatePayload payload) {
+        User found = this.findById(userId);
+
+        found.setUsername(payload.username());
+        found.setEmail(payload.email());
+        found.setName(payload.name());
+        found.setSurname(payload.surname());
+
+        return userRepository.save(found);
     }
 
 }

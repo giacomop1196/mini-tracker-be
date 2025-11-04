@@ -2,11 +2,13 @@ package mini_tracker.mini_tracker.Controllers;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.Valid;
 import lombok.ToString;
 import mini_tracker.mini_tracker.Entities.Expense;
 import mini_tracker.mini_tracker.Entities.Revenue;
 import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Payloads.UserPayload;
+import mini_tracker.mini_tracker.Payloads.UserUpdatePayload;
 import mini_tracker.mini_tracker.Repositories.UserRepository;
 import mini_tracker.mini_tracker.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +55,17 @@ public class UserController {
     }
 
     //Rimozione Utente
-    @DeleteMapping("/{utenteid}")
+    @DeleteMapping("/{utenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUtente(@PathVariable UUID utenteId) {
+    public void deleteUtente(@PathVariable("utenteId") UUID utenteId) { // Usa "utenteId"
         userService.findByIdAndDelete(utenteId);
+    }
+
+    @PutMapping("/{utenteId}")
+    public User updateUtente(
+            @PathVariable("utenteId") UUID utenteId,
+            @RequestBody @Valid UserUpdatePayload payload) {
+        return userService.findByIdAndUpdate(utenteId, payload);
     }
 
 }
