@@ -40,7 +40,15 @@ public class ExpenseController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "date") String sort
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        String[] sortParams = sort.split(",");
+        String property = sortParams[0];
+        
+        Sort.Direction direction = Sort.Direction.ASC;
+        if (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("DESC")) {
+            direction = Sort.Direction.DESC;
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, property));
         return expenseService.findByUserId(userId, pageable);
     }
 
