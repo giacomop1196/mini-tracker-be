@@ -3,6 +3,7 @@ package mini_tracker.mini_tracker.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,6 +35,9 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(req -> req
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/user/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
         );
 

@@ -105,4 +105,18 @@ public class UserService {
         return userRepository.save(found);
     }
 
+    // Metodo per bloccare un utente
+    public User lockUser(UUID userId) {
+        User found = this.findById(userId);
+        found.setLocked(true);
+        return userRepository.save(found);
+    }
+
+    // Metodo per sbloccare un utente
+    public User unlockUser(UUID userId) {
+        User found = this.findById(userId);
+        found.setLocked(false);
+        return userRepository.save(found);
+    }
+
 }

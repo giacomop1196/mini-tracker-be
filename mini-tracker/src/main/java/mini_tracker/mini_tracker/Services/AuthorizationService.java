@@ -21,8 +21,10 @@ public class AuthorizationService {
     public LoginResponsePayload CheckCredentialAndDoToken(LoginPayload body) {
 
         User found = this.userService.findByEmail(body.email());
-        if (bcrypt.matches(body.password(), found.getPassword()))
-        {
+        if (bcrypt.matches(body.password(), found.getPassword())) {
+            if (!found.isAccountNonLocked()) {
+                throw new UnauthorizedException("Questo account è bloccato.");
+            }
             String token = jwtTools.createToken(found);
             return new LoginResponsePayload(token, found.getUserId());
         } else{

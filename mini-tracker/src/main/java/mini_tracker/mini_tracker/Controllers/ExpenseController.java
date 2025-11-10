@@ -42,7 +42,7 @@ public class ExpenseController {
     ) {
         String[] sortParams = sort.split(",");
         String property = sortParams[0];
-        
+
         Sort.Direction direction = Sort.Direction.ASC;
         if (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("DESC")) {
             direction = Sort.Direction.DESC;

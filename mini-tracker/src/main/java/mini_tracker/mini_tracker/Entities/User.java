@@ -27,17 +27,16 @@ public class User implements UserDetails {
     UserType role;
 
     String username;
-
     String email;
-
     String password;
-
     String name;
-
     String surname;
 
     @Column(name = "avatar_url")
     private String avatarURL;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean locked = false;
 
     public User( String username, String email, String password, String name, String surname) {
         this.role = UserType.USER;
@@ -50,31 +49,36 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        // La tua versione (corretta)
         return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        // Modifica in 'true'
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        // Collega il nostro campo 'locked'
+        return !this.locked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        // Modifica in 'true'
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        // Modifica in 'true'
+        return true;
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude //Evita un loop infinito nel metodo toString()
+    @ToString.Exclude
     private List<Revenue> revenues;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

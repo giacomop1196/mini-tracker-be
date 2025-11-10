@@ -68,4 +68,16 @@ public class UserController {
         return userService.findByIdAndUpdate(utenteId, payload);
     }
 
+    // Blocca utente
+    @PatchMapping("/{userId}/lock")
+    public User lockUser(@PathVariable UUID userId) {
+        return userService.lockUser(userId);
+    }
+
+    // Sblocca utente
+    @PatchMapping("/{userId}/unlock")
+    public User unlockUser(@PathVariable UUID userId) {
+        return userService.unlockUser(userId);
+    }
+
 }
