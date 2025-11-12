@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -78,6 +79,11 @@ public class UserController {
     @PatchMapping("/{userId}/unlock")
     public User unlockUser(@PathVariable UUID userId) {
         return userService.unlockUser(userId);
+    }
+
+    @GetMapping("/stats/total")
+    public Map<String, Long> getTotalUserStats() {
+        return Map.of("totalUsers", userService.getTotalUserCount());
     }
 
 }
