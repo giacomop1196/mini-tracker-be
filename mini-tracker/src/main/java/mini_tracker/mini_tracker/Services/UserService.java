@@ -5,6 +5,8 @@ import mini_tracker.mini_tracker.Entities.User;
 import mini_tracker.mini_tracker.Exceptions.NotFoundException;
 import mini_tracker.mini_tracker.Payloads.UserPayload;
 import mini_tracker.mini_tracker.Payloads.UserUpdatePayload;
+import mini_tracker.mini_tracker.Repositories.ExpenseRepository;
+import mini_tracker.mini_tracker.Repositories.RevenueRepository;
 import mini_tracker.mini_tracker.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Slf4j
@@ -27,6 +30,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder bcrypt;
 
+    @Autowired
+    private RevenueRepository revenueRepository;
+
+    @Autowired
+    private ExpenseRepository expenseRepository;
 
     // Recuperare tutti gli Utenti paginati
     public Page<User> getAllUsers(int pageNumber, int pageSize, String sortBy) {
@@ -124,4 +132,16 @@ public class UserService {
         return userRepository.count();
     }
 
+    // Metodo conta utenti bloccati
+    public long getLockedUserCount() {
+        return userRepository.countByLocked(true);
+    }
+
+    public BigDecimal getGlobalTotalRevenue() {
+        return revenueRepository.getGlobalTotalRevenue();
+    }
+
+    public BigDecimal getGlobalTotalExpenses() {
+        return expenseRepository.getGlobalTotalExpenses();
+    }
 }

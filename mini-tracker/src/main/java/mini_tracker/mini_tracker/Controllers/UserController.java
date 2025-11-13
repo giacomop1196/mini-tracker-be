@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -84,6 +85,19 @@ public class UserController {
     @GetMapping("/stats/total")
     public Map<String, Long> getTotalUserStats() {
         return Map.of("totalUsers", userService.getTotalUserCount());
+    }
+
+    @GetMapping("/stats/locked")
+    public Map<String, Long> getLockedUserStats() {
+        return Map.of("totalLocked", userService.getLockedUserCount());
+    }
+
+    @GetMapping("/stats/global-economy")
+    public Map<String, BigDecimal> getGlobalEconomyStats() {
+        return Map.of(
+                "globalRevenue", userService.getGlobalTotalRevenue(),
+                "globalExpenses", userService.getGlobalTotalExpenses()
+        );
     }
 
 }
